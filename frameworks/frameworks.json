@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Persona Critique",
+    "description": "Evaluate an idea or decision from the perspective of a specific user, stakeholder, or archetype to uncover blind spots, unmet needs, or misaligned incentives.",
+    "output_instructions": "Write 3 short observations from the viewpoint of a key user or stakeholder. Highlight one unmet need, one incentive misalignment, and one overlooked expectation."
+  },
+  {
+    "name": "Systems Thinking",
+    "description": "Analyze how components interact within a whole system, focusing on feedback loops, dependencies, and second-order effects rather than isolated parts.",
+    "output_instructions": "Identify 3 system-level effects or feedback loops. Mention one upstream or downstream impact the idea could trigger unintentionally."
+  },
+  {
+    "name": "Good Enough Solution Analysis (GESA)",
+    "description": "Determine the minimum viable solution that adequately solves the problem, avoiding over-engineering and optimizing for speed, cost, or practicality.",
+    "output_instructions": "List 3 ways the idea might be overbuilt or more complex than necessary. Suggest one simpler approach that could achieve 80% of the desired outcome faster or cheaper."
+  },
+  {
+    "name": "Constraint Analysis",
+    "description": "Identify and examine limiting factors (time, budget, skills, regulations, resources) to shape realistic solutions and prioritize leverage points.",
+    "output_instructions": "Point out 3 realistic constraints that might be ignored. For each, explain how it could block or distort the idea’s execution."
+  },
+  {
+    "name": "Opposing Viewpoint",
+    "description": "Deliberately argue against your own position to stress-test reasoning, expose weaknesses, and reduce confirmation bias.",
+    "output_instructions": "Write a short paragraph arguing against the idea from a skeptical viewpoint. Focus on what could go wrong, why it might fail, or what assumption it relies on too heavily."
+  },
+  {
+    "name": "Category Error Check",
+    "description": "Verify that concepts, metrics, or solutions are being applied to the correct type of problem, preventing mismatches between problem class and approach.",
+    "output_instructions": "Ask: Is the idea solving the right type of problem (e.g., technical vs. behavioral)? Mention 2 signs of mismatch between problem type and approach."
+  },
+  {
+    "name": "Root Cause Analysis",
+    "description": "Trace symptoms back to their underlying causes—often using methods like the '5 Whys'—to ensure solutions address the source, not just effects.",
+    "output_instructions": "List the observed problem and ask 'why' iteratively to surface 2 plausible root causes. End with a sentence on whether the idea targets the root or a symptom."
+  },
+  {
+    "name": "First Principles Decomposition",
+    "description": "Break a problem down to fundamental truths and rebuild solutions from the ground up, avoiding assumptions inherited from precedent or convention.",
+    "output_instructions": "Briefly list 3 assumptions baked into the idea. Propose how rethinking one from first principles might yield a simpler or stronger alternative."
+  },
+  {
+    "name": "Assumption Testing",
+    "description": "Explicitly surface assumptions and validate them through data, experiments, or counterexamples before committing to decisions.",
+    "output_instructions": "List 3 assumptions the idea depends on. For each, assess if it’s validated or not — and note one way it could be tested quickly."
+  },
+  {
+    "name": "Opportunity Cost Assessment",
+    "description": "Evaluate what is being sacrificed by choosing one option over others, ensuring resources are allocated to the highest-value alternative.",
+    "output_instructions": "Briefly describe 2 other paths that won’t be pursued if this idea is chosen. Mention what potential value could be left on the table."
+  }
+]

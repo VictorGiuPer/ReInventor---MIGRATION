@@ -1,0 +1,61 @@
+from llm_client import client
+from core.utils import load_frameworks, build_framework_list_text
+
+def critique_1(context_summary: str, abstraction_level: int) -> str:
+    """
+    Full orchestration for Critique Round 1 using real LLM + dynamic framework selection.
+    """
+    # Load the full framework library available for critique
+    frameworks = load_frameworks()
+
+     # Convert framework definitions into a readable text block for the LLM
+    framework_list = build_framework_list_text(frameworks)
+
+    # Construct the critique prompt
+    prompt = f"""
+    You are the Critique Engine in the Idea Hardener workflow.
+
+    Here is the user's idea context:
+    ---
+    {context_summary}
+    ---
+
+    Critique Abstraction Level: {abstraction_level}
+
+    Below is a list of possible critique frameworks and how they are defined. Carefully read them and then select exactly three (3) that are most relevant to this context given all information available.
+
+    Frameworks:
+    {framework_list}
+    
+    Your task:
+    - Select 3 frameworks from the above list and critique the user's ideas constructively, without withhold insight for fear of offending the user.
+    - For each selected framework:
+        - Use the **output instructions** included in the framework list to guide your critique output format
+        - Focus ONLY on critique (risks, assumptions, blind spots, constraints).
+        - DO NOT propose solutions or mitigations at this step.
+
+    Output Format:
+    (important information should be outlined with **...**, to make them stand out in markdown)
+
+    ###Framework Name 1
+    [Framework 1 output structure]
+
+    ###Framework Name 2
+    [Framework 2 output structure]
+
+    ###Framework Name 3
+    [Framework 3 output structure]
+
+    """
+
+    # Single LLM call to generate the first structured critique pass
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {"role": "system", "content": "You are a structured and rigorous critique assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.7
+    )
+
+    return response.choices[0].message.content
