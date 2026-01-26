@@ -73,3 +73,14 @@ def extract_framework_names(critique_output: str) -> list:
 def get_reframed_understanding(clarification_output: str) -> str:
     # Split on the questions header and keep only the understanding part
     return clarification_output.split("🧩 Clarifying Questions:", 1)[0].strip()
+
+
+def extract_questions(clarification_output: str) -> list:
+    """
+    Extract clarifying questions from the LLM's output.
+    Simple parser based on markdown-style list (e.g. "1. Question").
+    """
+    # Extract numbered clarification questions (assumes "1. Question" format)
+    lines = clarification_output.split("\n")
+    questions = [line.strip()[3:] for line in lines if line.strip().startswith(("1. ", "2. ", "3. ", "4. ", "5. "))]
+    return questions

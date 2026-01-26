@@ -4,7 +4,7 @@ from core.utils import load_frameworks, build_framework_list_text, filter_unused
 def critique_round_2(
     context_summary: str,
     abstraction_level: int,
-    frameworks_used_round_1: list[str]
+    frameworks_used_round_1: list[str],
 ) -> str:
     """
     Full orchestration for Critique Round 2 using new, orthogonal frameworks.
@@ -30,7 +30,7 @@ def critique_round_2(
     ---
     {context_summary}
     ---
-
+    
     Critique Abstraction Level: {abstraction_level}
 
     The following critique frameworks were already used in Round 1.

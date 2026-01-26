@@ -19,25 +19,23 @@ def clarification_prompt(formatted_input: str) -> str:
     1. Rephrase the idea in a more holistic and structured way. Summarize it logically.
     2. Decompose it into parts: problem, proposed solution, personas, assumptions.
     3. Identify what’s **missing or ambiguous** (e.g. constraints, stakeholders, logic gaps).
-    4. Ask 3–5 **clarifying questions** to resolve these gaps.
+    4. Ask 5 **clarifying questions** to resolve these gaps.
         - Be **targeted** and **specific**.
         - DO NOT include suggestions or critique.
         - Questions should reflect genuine curiosity and logical gaps.
-    5. End with: “Did I get it right? Give me feedback.”
 
     FINAL OUTPUT FORMAT:
     This is just a quick level-set.
 
     💡 Reframed Understanding:
     [Your holistic, structured restatement of the idea.]
-
+    
     🧩 Clarifying Questions:
     1. ...
     2. ...
     3. ...
     4. ...
     5. ...
-    Did I get it right? Say more about your problem and how your idea is the best solution.
 
     NOTES:
     - Maintain a helpful and constructive tone.

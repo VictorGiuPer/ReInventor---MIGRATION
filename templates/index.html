@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ReInventor (Flask)</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            line-height: 1.5;
+        }
+
+        h1, h2, h3 {
+            margin-top: 30px;
+        }
+
+        textarea, input {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        .box {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #999;
+        }
+
+        .warning {
+            background: #ffe6e6;
+            padding: 10px;
+            border-left: 4px solid red;
+        }
+
+        .clarification-box {
+            background: #f5f5f5;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-left: 4px solid #999;
+        }
+
+        .clarification-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .clarification-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fixed-label {
+            font-weight: bold;
+            margin-bottom: 6px;
+            line-height: 1.3;
+            min-height: 4.5em; /* approximates label_height_em */
+        }
+
+        textarea {
+            resize: vertical;
+            width: 100%;
+        }
+        /* ============================= */
+        /* Critique Round Layout         */
+        /* ============================= */
+
+        .critique-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto 40px auto;
+        }
+
+        .critique-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-left: 4px solid #999;
+        }
+
+        .critique-content {
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .critique-responses textarea {
+            width: 100%;
+        }
+
+        /* ============================= */
+        /* Context Update Acknowledgement */
+        /* ============================= */
+
+        .ack-box {
+            max-width: 720px;          /* prevents full-page stretch */
+            margin: 24px auto;         /* center horizontally */
+            padding: 16px 18px;
+            background: #f7f9fc;
+            border-left: 4px solid #4a6cf7;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .ack-box h4 {
+            margin: 0 0 8px 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .ack-box pre {
+            margin: 0;
+            white-space: pre-wrap;     /* wrap long lines */
+            word-break: break-word;
+            font-family: inherit;      /* no ugly monospace */
+        }
+
+
+    </style>
+</head>
+
+<!-- ===================================================== -->
+<!-- DEV RESET BUTTON -->
+<!-- ===================================================== -->
+<form method="post" action="/reset" style="position: fixed; bottom: 20px; right: 20px;">
+    <button type="submit" style="background:#eee; border:1px solid #aaa;">
+        Reset to Step 0
+    </button>
+</form>
+
+<body>
+
+<h1>ReInventor (Flask Prototype)</h1>
+
+{% if message %}
+<div class="warning">
+    {{ message }}
+</div>
+{% endif %}
+
+<!-- ===================================================== -->
+<!-- STEP 0 — SUBMIT IDEA -->
+<!-- ===================================================== -->
+{% if state.current_step == 0 %}
+
+<h2>Step 0 — Submit Your Idea</h2>
+
+<form method="post">
+
+    <label><strong>Problem</strong></label>
+    <textarea name="problem">{{ state.problem or "" }}</textarea>
+
+    <label><strong>Proposed Approach</strong></label>
+    <textarea name="approach">{{ state.approach or "" }}</textarea>
+
+    <label><strong>Primary Stakeholder</strong></label>
+    <input name="stakeholder" value="{{ state.stakeholder or "" }}">
+
+    <label><strong>Constraints / Non-negotiables</strong></label>
+    <textarea name="constraints">{{ state.constraints or "" }}</textarea>
+
+    <label><strong>Critique Abstraction Level (0–10)</strong></label>
+    <input
+        type="number"
+        name="abstraction"
+        value="{{ state.abstraction or 5 }}"
+        min="0"
+        max="10"
+    >
+
+    <button type="submit">Generate Clarifying Questions</button>
+
+</form>
+
+{% endif %}
+
+<!-- ===================================================== -->
+<!-- STEP 1 — CLARIFICATION QUESTIONS + ANSWERS -->
+<!-- ===================================================== -->
+{% if state.current_step == 1 %}
+
+<h2>Your Clarification Responses</h2>
+
+<!-- Clarification output ABOVE inputs -->
+<div class="clarification-box">
+    <h3>Reframed Understanding</h3>
+    <p>{{ state.reframed_understanding }}</p>
+</div>
+
+<form method="post">
+
+    <div class="clarification-grid">
+        {% for i in range(3) %}
+            <!-- LEFT COLUMN -->
+            <div class="clarification-item">
+                <div class="fixed-label" title="{{ state.clarification_prompts[i] }}">
+                    {{ state.clarification_prompts[i] }}
+                </div>
+                <textarea name="clarify_answer_{{ i }}" rows="6">
+                {{ state["clarify_answer_" ~ i] or "" }}
+                </textarea>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="clarification-item">
+                <div class="fixed-label" title="{{ state.clarification_prompts[i+3] }}">
+                    {{ state.clarification_prompts[i+3] }}
+                </div>
+                <textarea name="clarify_answer_{{ i+3 }}" rows="6">
+                {{ state["clarify_answer_" ~ (i+3)] or "" }}
+                </textarea>
+            </div>
+        {% endfor %}
+    </div>
+
+    <button type="submit">Generate Context Summary</button>
+</form>
+
+{% endif %}
+
+
+<!-- ===================================================== -->
+<!-- STEP 2 — CONTEXT SUMMARY REVIEW -->
+<!-- ===================================================== -->
+{% if state.current_step == 2 %}
+
+<h2>Step 2 — Context Summary</h2>
+
+<p>
+    Review or edit the context summary below before continuing.
+</p>
+
+<form method="post">
+
+    <textarea
+        name="context_summary"
+        rows="14"
+        style="width:100%;"
+    >{{ state.context_summary or "" }}</textarea>
+
+    <div style="margin-top: 15px;">
+        <button type="submit" name="action" value="run_critique_1">
+            Run Critique Round 1
+        </button>
+    </div>
+
+</form>
+
+{% endif %}
+
+
+<!-- ===================================================== -->
+<!-- STEP 3 — Critique Round 1 -->
+<!-- ===================================================== -->
+
+{% if state.current_step == 3 %}
+
+<h2>Critique Round 1</h2>
+
+<div class="critique-grid">
+
+    <!-- LEFT: Critique Output -->
+    <div class="critique-box">
+        <h3>Critique</h3>
+        <div class="critique-content">
+            {{ state.critique_round_1 }}
+        </div>
+    </div>
+
+    <!-- RIGHT: User Responses -->
+    <div class="critique-responses">
+        <h3>Your Responses</h3>
+        <p>Respond to each framework (type '-' if none).</p>
+
+        <form method="post">
+            {% for fw in state.frameworks_used_round_1 %}
+                <div class="clarification-item">
+                    <div class="fixed-label">
+                        💬 {{ fw }}
+                    </div>
+                    <textarea
+                        name="critique_response_r1_{{ loop.index0 }}"
+                        rows="6"
+                    >{{ state["critique_response_r1_" ~ loop.index0] or "" }}</textarea>
+                </div>
+            {% endfor %}
+
+            <button type="submit">Submit Your Reflections</button>
+        </form>
+    </div>
+
+</div>
+
+{% if state.acknowledgement_round_1 %}
+<div class="box">
+    <strong>Context Update Acknowledgement</strong>
+    <pre>{{ state.acknowledgement_round_1 }}</pre>
+</div>
+{% endif %}
+
+{% endif %}
+
+
+<!-- ===================================================== -->
+<!-- STEP 4 — Context Update -->
+<!-- ===================================================== -->
+
+{% if state.current_step == 4 %}
+
+<h2>After Critique Round 1</h2>
+
+<div class="ack-box">
+    <h4>Context Update Acknowledgement</h4>
+    <pre>{{ state.acknowledgement_round_1 }}</pre>
+</div>
+
+<form method="post" style="text-align:center; margin-top: 24px;">
+    <button type="submit">Run Critique Round 2</button>
+</form>
+
+{% endif %}
+
+</body>
+</html>
