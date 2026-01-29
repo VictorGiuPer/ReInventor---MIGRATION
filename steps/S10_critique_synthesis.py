@@ -52,12 +52,7 @@ def critique_synthesis(
     - **Medium** — important to address but not blocking
     - **Low** — useful improvement but non-essential
 
-    3. Briefly explain **why this matters** in *this specific case*, grounding your reasoning in:
-    - The stakeholder
-    - Constraints and non-negotiables
-    - Problem context
-    - Abstraction level
-    - The user’s own reflections
+    3. Briefly explain how the users comments already consider or do not consider this critique and if possible build on top of the users ideas.
 
     ---
 
