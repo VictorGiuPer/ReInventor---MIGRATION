@@ -297,7 +297,9 @@
                 </div>
             {% endfor %}
 
-            <button type="submit">Submit Your Reflections</button>
+            <button type="submit" name="action" value="submit_r1">
+                Submit Your Reflections
+            </button>
         </form>
     </div>
 
@@ -331,6 +333,192 @@
 </form>
 
 {% endif %}
+
+<!-- ===================================================== -->
+<!-- STEP 5 — Critique Round 2 -->
+<!-- ===================================================== -->
+{% if state.current_step == 5 %}
+
+<h2>Critique Round 2</h2>
+
+<div class="critique-grid">
+
+    <!-- LEFT: Critique Output -->
+    <div class="critique-box">
+        <h3>Critique</h3>
+        <div class="critique-content">
+            {{ state.critique_round_2 }}
+        </div>
+    </div>
+
+    <!-- RIGHT: User Responses -->
+    <div class="critique-responses">
+        <h3>Your Responses</h3>
+        <p>Respond to each framework (type '-' if none).</p>
+
+        <form method="post">
+            {% for fw in state.frameworks_used_round_2 %}
+                <div class="clarification-item">
+                    <div class="fixed-label">
+                        💬 {{ fw }}
+                    </div>
+                    <textarea
+                        name="critique_response_r2_{{ loop.index0 }}"
+                        rows="6"
+                    >{{ state["critique_response_r2_" ~ loop.index0] or "" }}</textarea>
+                </div>
+            {% endfor %}
+
+            <button type="submit">
+                Submit Your Reflections (Round 2)
+            </button>
+        </form>
+    </div>
+
+</div>
+
+{% endif %}
+
+<!-- ===================================================== -->
+<!-- STEP 6 — Context Update -->
+<!-- ===================================================== -->
+{% if state.current_step == 6 %}
+
+<h2>After Critique Round 2</h2>
+
+<div class="ack-box">
+    <h4>Context Update Acknowledgement</h4>
+    <pre>{{ state.acknowledgement_round_2 }}</pre>
+</div>
+
+<form method="post" style="text-align:center; margin-top: 24px;">
+    <button type="submit" name="action" value="continue_after_r2">
+        Continue
+    </button>
+</form>
+
+{% endif %}
+
+<!-- ===================================================== -->
+<!-- STEP 7 — Optional Critique Round 3 (Framework Selection) -->
+<!-- ===================================================== -->
+
+{% if state.current_step == 7 %}
+
+<h2>Optional — Critique Round 3</h2>
+
+<p>Select 1 to 3 frameworks for a final critique round.</p>
+
+<form method="post">
+    <h3>Select 1–3 frameworks</h3>
+
+    <select name="selected_frameworks" multiple size="6" style="width:100%;">
+        {% for fw in state.available_frameworks %}
+            <option value="{{ fw }}"
+                {% if fw in state.get("user_selected_frameworks", []) %}
+                    selected
+                {% endif %}
+            >
+                {{ fw }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <div style="margin-top:16px;">
+        <button type="submit" name="action" value="run_round_3">
+            Run Critique Round 3
+        </button>
+
+        <button type="submit" name="action" value="skip_round_3">
+            🚀 Skip Final Critique
+        </button>
+    </div>
+</form>
+
+{% endif %}
+
+
+<!-- ===================================================== -->
+<!-- STEP 8 — Critique Round 3 -->
+<!-- ===================================================== -->
+
+{% if state.current_step == 8 %}
+
+<h2>Critique Round 3</h2>
+
+<div class="critique-grid">
+
+    <!-- LEFT: Critique Output -->
+    <div class="critique-box">
+        <h3>Critique</h3>
+        <div class="critique-content">
+            {{ state.critique_round_3 }}
+        </div>
+    </div>
+
+    <!-- RIGHT: User Responses -->
+    <div class="critique-responses">
+        <h3>Your Responses</h3>
+        <p>Respond to each framework (type '-' if none).</p>
+
+        <form method="post">
+            {% for fw in state.user_selected_frameworks %}
+                <div class="clarification-item">
+                    <div class="fixed-label">
+                        💬 {{ fw }}
+                    </div>
+                    <textarea
+                        name="critique_response_r3_{{ loop.index0 }}"
+                        rows="6"
+                    >{{ state["critique_response_r3_" ~ loop.index0] or "" }}</textarea>
+                </div>
+            {% endfor %}
+
+            <button type="submit">
+                Submit Your Reflections (Round 3)
+            </button>
+        </form>
+    </div>
+
+</div>
+
+{% endif %}
+
+
+
+
+
+
+<!-- ===================================================== -->
+<!-- STEP 10 — AGGREGATED CRITIQUE SUMMARY -->
+<!-- ===================================================== -->
+
+{% if state.current_step == 10 and state.done_round_3 %}
+
+<h2>5. Aggregated Critique Summary & Criticality Ranking</h2>
+
+<p>
+    Now that you've reflected on all critique rounds, this step will
+    summarize and prioritize the critique feedback.
+</p>
+
+<form method="post" style="margin-top: 20px;">
+    <button type="submit" name="action" value="run_synthesis">
+        Generate Aggregated Critique Summary
+    </button>
+</form>
+
+{% if state.critique_synthesis %}
+    <div class="critique-box" style="margin-top: 30px;">
+        <h3>🧠 Aggregated Critique Summary (with Criticality)</h3>
+        <div class="critique-content">
+            {{ state.critique_synthesis }}
+        </div>
+    </div>
+{% endif %}
+
+{% endif %}
+
 
 </body>
 </html>

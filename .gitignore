@@ -12,3 +12,7 @@ venv/
 Thumbs.db
 
 *:Zone.Identifier
+
+# Flask session files
+flask_sessions/
+sessions/
