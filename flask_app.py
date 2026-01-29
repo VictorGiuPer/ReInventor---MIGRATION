@@ -1,14 +1,17 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from state.flask_session_state import FlaskSessionState
 from core.utils import extract_questions, get_reframed_understanding, load_frameworks
-from steps.S03_user_response import context_summary_0
 
+from steps.S03_user_response import context_summary_0
 
 from actions.clarify import run_clarification
 from actions.critique_round_1 import run_critique_round_1, submit_reflections_round_1
 from actions.critique_round_2 import run_critique_round_2, submit_reflections_round_2
 from actions.critique_round_3 import run_critique_round_3, submit_reflections_round_3
 from actions.synthesis import run_critique_synthesis
+from actions.mitigation import run_mitigation_generation
+from actions.context_prompt import run_context_prompt_generation
+
 
 from flask_session import Session
 
@@ -271,10 +274,8 @@ def index():
                 )
                 state["current_step"] = 9
 
-
-
-
-
+        elif step == 9:
+            state["current_step"] = 10
 
         elif step == 10:
             action = request.form.get("action")
@@ -282,6 +283,31 @@ def index():
             if action == "run_synthesis":
                 run_critique_synthesis(state=state)
                 state["current_step"] = 10
+
+            elif action == "continue_to_mitigations":
+                state["current_step"] = 11
+
+        elif step == 11:
+            action = request.form.get("action")
+
+            if action == "run_mitigations":
+                run_mitigation_generation(state=state)
+                state["current_step"] = 11
+
+            elif action == "continue_to_context_prompt":
+                state["current_step"] = 12
+
+
+        elif step == 12:
+            action = request.form.get("action")
+
+            if action == "generate_context_prompt":
+                run_context_prompt_generation(state=state)
+                state["current_step"] = 12
+
+            elif action == "reset_app":
+                state.clear()
+                state["current_step"] = 0
 
 
     return render_template(

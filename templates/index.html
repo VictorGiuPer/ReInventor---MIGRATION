@@ -131,15 +131,6 @@
     </style>
 </head>
 
-<!-- ===================================================== -->
-<!-- DEV RESET BUTTON -->
-<!-- ===================================================== -->
-<form method="post" action="/reset" style="position: fixed; bottom: 20px; right: 20px;">
-    <button type="submit" style="background:#eee; border:1px solid #aaa;">
-        Reset to Step 0
-    </button>
-</form>
-
 <body>
 
 <h1>ReInventor (Flask Prototype)</h1>
@@ -484,25 +475,37 @@
 
 {% endif %}
 
+<!-- ===================================================== -->
+<!-- STEP 9 — Context Update Acknowledgement (Round 3) -->
+<!-- ===================================================== -->
 
+{% if state.current_step == 9 %}
 
+<h2>After Critique Round 3</h2>
 
+<div class="ack-box">
+    <h4>Context Update Acknowledgement</h4>
+    <pre>{{ state.acknowledgement_round_3 }}</pre>
+</div>
+
+<form method="post" style="text-align:center; margin-top: 24px;">
+    <button type="submit">
+        Continue to Aggregated Summary
+    </button>
+</form>
+
+{% endif %}
 
 
 <!-- ===================================================== -->
 <!-- STEP 10 — AGGREGATED CRITIQUE SUMMARY -->
 <!-- ===================================================== -->
 
-{% if state.current_step == 10 and state.done_round_3 %}
+{% if state.current_step == 10 %}
 
 <h2>5. Aggregated Critique Summary & Criticality Ranking</h2>
 
-<p>
-    Now that you've reflected on all critique rounds, this step will
-    summarize and prioritize the critique feedback.
-</p>
-
-<form method="post" style="margin-top: 20px;">
+<form method="post">
     <button type="submit" name="action" value="run_synthesis">
         Generate Aggregated Critique Summary
     </button>
@@ -510,12 +513,102 @@
 
 {% if state.critique_synthesis %}
     <div class="critique-box" style="margin-top: 30px;">
-        <h3>🧠 Aggregated Critique Summary (with Criticality)</h3>
+        <h3>🧠 Aggregated Critique Summary</h3>
         <div class="critique-content">
             {{ state.critique_synthesis }}
         </div>
     </div>
+
+    <form method="post" style="margin-top: 24px; text-align:center;">
+        <button type="submit" name="action" value="continue_to_mitigations">
+            Continue to Mitigations
+        </button>
+    </form>
 {% endif %}
+
+{% endif %}
+
+<!-- ===================================================== -->
+<!-- STEP 11 — MITIGATION & IMPROVEMENT IDEAS -->
+<!-- ===================================================== -->
+
+{% if state.current_step == 11 %}
+
+<h2>6. Mitigation & Improvement Ideas</h2>
+
+<form method="post">
+    <button type="submit" name="action" value="run_mitigations">
+        Generate Mitigations & Improvements
+    </button>
+</form>
+
+{% if state.mitigation_improvement_output %}
+    <div class="critique-box" style="margin-top: 30px;">
+        <h3>🛠️ Mitigations & Improvements</h3>
+        <div class="critique-content">
+            {{ state.mitigation_improvement_output }}
+        </div>
+    </div>
+
+    <form method="post" style="margin-top: 24px; text-align:center;">
+        <button type="submit" name="action" value="continue_to_context_prompt">
+            Generate Context Prompt
+        </button>
+    </form>
+{% endif %}
+
+{% endif %}
+
+<!-- ===================================================== -->
+<!-- STEP 12 — CONTEXT-SETTING PROMPT -->
+<!-- ===================================================== -->
+
+{% if state.current_step == 12 %}
+
+<h2>7. Context-Setting Prompt</h2>
+
+<form method="post">
+    <button type="submit" name="action" value="generate_context_prompt">
+        Generate Context Prompt
+    </button>
+</form>
+
+{% if state.context_prompt %}
+    <div class="critique-box" style="margin-top: 30px;">
+        <h3>📌 Context Prompt</h3>
+        <div class="critique-content">
+            {{ state.context_prompt }}
+        </div>
+    </div>
+
+    <form method="post" style="margin-top: 30px; text-align:center;">
+        <button type="submit" name="action" value="reset_app">
+            Challenge Another Idea
+        </button>
+    </form>
+{% endif %}
+
+{% endif %}
+
+<!-- ===================================================== -->
+<!-- STEP 13 — THANK YOU / RESET -->
+<!-- ===================================================== -->
+
+{% if state.current_step == 13 %}
+
+<h2>Thanks for using ReInventor 🙌</h2>
+
+<p>
+    Your idea has been stress-tested, refined, and equipped with concrete
+    mitigations.  
+    You’re now ready to move forward with confidence.
+</p>
+
+<form method="post" style="margin-top: 30px; text-align:center;">
+    <button type="submit" name="action" value="reset_app">
+        Start a New Challenge
+    </button>
+</form>
 
 {% endif %}
 
