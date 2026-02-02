@@ -23,8 +23,65 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_USE_SIGNER"] = True
 app.config["SESSION_FILE_DIR"] = "./flask_sessions"
 
-Session(app)
+def progress_anchor_for(current_step: int) -> str:
+    """
+    Maps backend internal steps to UI progress anchors:
+    1 Submit Idea, 2 Clarify, 3 Critique1, 4 Critique2, 5 Critique3, 6 Synthesis, 7 Mitigations, 8 Context Prompt
+    """
+    if current_step <= 0:
+        return "step-1"
+    elif current_step <= 2:
+        return "step-2"
+    elif current_step <= 4:
+        return "step-3"
+    elif current_step <= 6:
+        return "step-4"
+    elif current_step <= 9:
+        return "step-5"
+    elif current_step <= 10:
+        return "step-6"
+    elif current_step <= 11:
+        return "step-7"
+    else:
+        return "step-8"
+    
+def scroll_target_for(current_step: int) -> str:
+    """
+    Fine-grained scroll targets.
+    These MUST correspond to IDs that exist in the HTML.
+    """
 
+    if current_step == 1:
+        return "step-2-questions"
+
+    if current_step == 2:
+        return "step-2-summary"
+
+    if current_step == 3:
+        return "step-3-critique"
+
+    if current_step == 4:
+        return "step-3-ack"
+
+    if current_step == 5:
+        return "step-4-critique"
+
+    if current_step == 6:
+        return "step-4-ack"
+
+    if current_step == 7:
+        return "step-5-select"
+
+    if current_step == 8:
+        return "step-5-critique"
+
+    if current_step == 9:
+        return "step-5-ack"
+
+    # From here on, macro steps are enough
+    return progress_anchor_for(current_step)
+
+Session(app)
 @app.route("/", methods=["GET", "POST"])
 def index():
     state = FlaskSessionState(session)
@@ -126,7 +183,7 @@ def index():
 
             if not updated_summary:
                 message = "Context summary cannot be empty."
-                return render_template("index.html", state=dict(state._session), message=message)
+                return render_template("claude_index.html", state=dict(state._session), message=message)
 
             if action == "update_summary":
                 # Stay on step 2
@@ -155,7 +212,7 @@ def index():
             if not all(v.strip() for v in responses_snapshot.values()):
                 message = "Please fill in all fields (use '-' if no response)."
                 return render_template(
-                    "index.html",
+                    "claude_index.html",
                     state=dict(state._session),
                     message=message,
                 )
@@ -199,11 +256,12 @@ def index():
 
             if action == "continue_after_r2":
                 state["current_step"] = 7
-                return render_template(
-                    "index.html",
+
+                """ return render_template(
+                    "claude_index.html",
                     state=dict(state._session),
                     message=None,
-                )
+                ) """
 
 
         elif step == 7:
@@ -216,7 +274,7 @@ def index():
                 state["done_round_3"] = True
                 state["current_step"] = 10
                 return render_template(
-                    "index.html",
+                    "claude_index.html",
                     state=dict(state._session),
                     message=None,
                 )
@@ -234,7 +292,7 @@ def index():
                 if len(selected_frameworks) < 1:
                     message = "Please select at least one framework."
                     return render_template(
-                        "index.html",
+                        "claude_index.html",
                         state=dict(state._session),
                         message=message,
                     )
@@ -242,7 +300,7 @@ def index():
                 if len(selected_frameworks) > 3:
                     message = "Please select no more than 3 frameworks."
                     return render_template(
-                        "index.html",
+                        "claude_index.html",
                         state=dict(state._session),
                         message=message,
                     )
@@ -310,10 +368,14 @@ def index():
                 state["current_step"] = 0
 
 
+    scroll_to = scroll_target_for(state.get("current_step", 0))
+
+
     return render_template(
-        "index.html",
+        "claude_index.html",
         state=dict(state._session),
         message=message,
+        scroll_to=scroll_to,
     )
 
 
@@ -321,7 +383,7 @@ def index():
 def reset():
     state = FlaskSessionState(session)
     state.clear()
-    return redirect(url_for("index"))
+    return redirect(url_for("claude_index"))
 
 
 if __name__ == "__main__":
