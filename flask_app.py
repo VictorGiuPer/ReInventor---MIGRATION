@@ -88,8 +88,9 @@ def index():
     message = None
 
     if request.method == "GET":
-        state.clear()
-        state["current_step"] = 0
+        if "current_step" not in state:
+            state["current_step"] = 0
+
         
     if "available_frameworks" not in state:
         all_frameworks = load_frameworks()
@@ -181,9 +182,13 @@ def index():
             updated_summary = request.form.get("context_summary", "").strip()
             state["context_summary"] = updated_summary
 
-            if not updated_summary:
+            if not updated_summary and action != "run_critique_1":
                 message = "Context summary cannot be empty."
-                return render_template("claude_index.html", state=dict(state._session), message=message)
+                return render_template(
+                    "claude_index.html",
+                    state=dict(state._session),
+                    message=message,
+                )
 
             if action == "update_summary":
                 # Stay on step 2

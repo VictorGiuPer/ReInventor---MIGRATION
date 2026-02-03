@@ -188,11 +188,11 @@
          border: 2px solid #60A5FA;
          }
          .clarification-box h3 {
-         color: #1E40AF;
+         color: #111827;
          margin-bottom: 12px;
          }
          .clarification-box p {
-         color: #1E3A8A;
+         color: #111827;
          line-height: 1.7;
          }
          .clarification-grid {
@@ -210,7 +210,7 @@
          margin-bottom: 8px;
          line-height: 1.4;
          min-height: 4.5em;
-         color: #111827;
+         color: #FFFFFF;
          font-size: 14px;
          }
          /* ============================= */
@@ -580,6 +580,47 @@
          .textarea-small {
          min-height: 70px;
          }
+         
+         /* ============================= */
+         /* LLM THINKING BUTTON           */
+         /* ============================= */
+
+         button[type="submit"] {
+         position: relative;
+         overflow: hidden;
+         }
+
+         /* Loading state */
+         button[type="submit"].loading {
+         pointer-events: none;
+         opacity: 0.85;
+         }
+
+         /* Shimmer overlay */
+         button[type="submit"]::after {
+         content: "";
+         position: absolute;
+         top: 0;
+         left: -150%;
+         width: 50%;
+         height: 100%;
+         background: linear-gradient(
+            120deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.45) 50%,
+            transparent 100%
+         );
+         }
+
+         /* Animate shimmer only when loading */
+         button[type="submit"].loading::after {
+         animation: shimmer 1.4s infinite;
+         }
+
+         @keyframes shimmer {
+         0% { left: -150%; }
+         100% { left: 150%; }
+         }
 
 
       </style>
@@ -682,33 +723,25 @@
                <!-- Top row -->
                <div class="form-group">
                   <label><strong>Problem</strong></label>
-                  <textarea name="problem" class="textarea-large">
-                  {{ state.problem or "" }}
-                  </textarea>
+                  <textarea name="problem" class="textarea-large">{{ state.problem or "" }}</textarea>
                </div>
 
                <div class="form-group">
                   <label><strong>Proposed Approach</strong></label>
-                  <textarea name="approach" class="textarea-large">
-                  {{ state.approach or "" }}
-                  </textarea>
+                  <textarea name="approach" class="textarea-large">{{ state.approach or "" }}</textarea>
                </div>
 
                <!-- Bottom left -->
                <div class="form-group">
                   <label><strong>Primary Stakeholder</strong></label>
-                  <textarea name="stakeholder" class="textarea-medium">
-                  {{ state.stakeholder or "" }}
-                  </textarea>
+                  <textarea name="stakeholder" class="textarea-medium">{{ state.stakeholder or "" }}</textarea>
                </div>
 
                <!-- Bottom right -->
                <div class="form-group stacked-right">
                   <div class="form-group">
                   <label><strong>Constraints / Non-negotiables</strong></label>
-                  <textarea name="constraints" class="textarea-small">
-                     {{ state.constraints or "" }}
-                  </textarea>
+                  <textarea name="constraints" class="textarea-small">{{ state.constraints or "" }}</textarea>
                   </div>
 
                   <div class="form-group">
@@ -725,7 +758,10 @@
 
             </div>
 
-            <button type="submit">Generate Clarifying Questions</button>
+            <button type="submit" class="llm-button" data-loading-text="Thinking…">
+            Generate Clarifying Questions
+            </button>
+
             </form>
 
             </section>
@@ -774,11 +810,7 @@
                   Review or edit the context summary below before continuing.
                </p>
                <form method="post">
-                  <textarea
-                     name="context_summary"
-                     rows="14"
-                     style="width:100%;"
-                     >{{ state.context_summary or "" }}</textarea>
+                  <textarea name="context_summary" rows="14" style="width:100%;">{{ state.context_summary or "" }}</textarea>
                   <div style="margin-top: 15px;">
                      <button type="submit" name="action" value="run_critique_1">
                      Run Critique Round 1
@@ -815,10 +847,7 @@
                            <div class="fixed-label">
                               💬 {{ fw }}
                            </div>
-                           <textarea
-                              name="critique_response_r1_{{ loop.index0 }}"
-                              rows="6"
-                              >{{ state["critique_response_r1_" ~ loop.index0] or "" }}</textarea>
+                           <textarea name="critique_response_r1_{{ loop.index0 }}" rows="6">{{ state["critique_response_r1_" ~ loop.index0] or "" }}</textarea>
                         </div>
                         {% endfor %}
                         <button type="submit" name="action" value="submit_r1">
@@ -868,10 +897,7 @@
                            <div class="fixed-label">
                               💬 {{ fw }}
                            </div>
-                           <textarea
-                              name="critique_response_r2_{{ loop.index0 }}"
-                              rows="6"
-                              >{{ state["critique_response_r2_" ~ loop.index0] or "" }}</textarea>
+                           <textarea name="critique_response_r2_{{ loop.index0 }}" rows="6">{{ state["critique_response_r2_" ~ loop.index0] or "" }}</textarea>
                         </div>
                         {% endfor %}
                         <button type="submit">
@@ -952,10 +978,7 @@
                            <div class="fixed-label">
                               💬 {{ fw }}
                            </div>
-                           <textarea
-                              name="critique_response_r3_{{ loop.index0 }}"
-                              rows="6"
-                              >{{ state["critique_response_r3_" ~ loop.index0] or "" }}</textarea>
+                           <textarea name="critique_response_r3_{{ loop.index0 }}" rows="6">{{ state["critique_response_r3_" ~ loop.index0] or "" }}</textarea>
                         </div>
                         {% endfor %}
                         <button type="submit">
@@ -1110,6 +1133,21 @@
             });
             </script>
 
+            <script>
+               document.addEventListener("DOMContentLoaded", () => {
+                  document.querySelectorAll("form").forEach(form => {
+                     form.addEventListener("submit", () => {
+                     const submitButtons = form.querySelectorAll('button[type="submit"]');
+
+                     submitButtons.forEach(button => {
+                        button.classList.add("loading");
+                        button.innerText = "Thinking…";
+                        button.disabled = true;
+                     });
+                     });
+                  });
+               });
+            </script>
 
 
 
