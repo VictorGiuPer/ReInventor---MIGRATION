@@ -88,9 +88,15 @@ def index():
     message = None
 
     if request.method == "GET":
-        if "current_step" not in state:
-            state["current_step"] = 0
-
+        # Fresh visit → reset wizard
+        state.clear()
+        state["current_step"] = 0
+        return render_template(
+            "claude_index.html",
+            state=dict(state._session),
+            message=None,
+            scroll_to="step-1",
+        )
         
     if "available_frameworks" not in state:
         all_frameworks = load_frameworks()
@@ -98,6 +104,8 @@ def index():
 
 
     if request.method == "POST":
+        print("POST step=", state.get("current_step"), "action=", request.form.get("action"))
+
         step = state.get("current_step", 0)
 
         # STEP 0 → generate clarification questions
