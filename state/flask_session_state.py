@@ -15,6 +15,9 @@ class FlaskSessionState:
     def __setitem__(self, key, value):
         self._session[key] = value
 
+    def __delitem__(self, key):
+        del self._session[key]
+
     def get(self, key, default=None):
         return self._session.get(key, default)
 
@@ -23,9 +26,17 @@ class FlaskSessionState:
 
     def keys(self):
         return self._session.keys()
-    
+
+    def pop(self, key, *args):
+        """
+        Remove and return key. Matches dict.pop() signature:
+          state.pop(key)           → raises KeyError if missing
+          state.pop(key, default)  → returns default if missing
+        """
+        return self._session.pop(key, *args)
+
     def clear(self):
-        """Clear entire session state"""
+        """Clear entire session state."""
         self._session.clear()
 
     def clear_except(self, allowed_keys: set):

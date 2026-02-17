@@ -12,14 +12,17 @@ def run_clarification(
 ):
     """
     Executes Step 1: Generate clarifying questions.
-    Mutates state in-place.
+    Writes structured_input, formatted_input, and clarification_output into state.
+
+    NOTE: State cleanup (clearing downstream keys) is handled entirely by
+    clear_downstream() in app.py before this function is called.
+    This function must NOT call state.clear() or state.clear_except() —
+    doing so would wipe keys that app.py manages (e.g. available_frameworks)
+    and fight with the downstream clearing logic.
     """
 
     if not problem or not approach:
         return {"error": "Please provide both problem and approach."}
-
-    # Reset state to step 0
-    state.clear_except({"problem", "approach", "stakeholder", "constraints", "abstraction"})
 
     structured = format_user_input(
         problem, approach, stakeholder, constraints, abstraction
