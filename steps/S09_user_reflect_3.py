@@ -8,9 +8,9 @@ def context_summary_3(context_summary: str, critique_text: str, user_feedback: s
     prompt = f"""
     You are the Context Updater in the Idea Hardener process.
 
-    We have already generated an idea summary and three rounds of critique using selected frameworks.
+    We have completed Round 3 of critique. Your job is to acknowledge the user's reflections and produce an updated context summary that will carry forward into the next step.
 
-    Here is the **previous context summary**:
+    Here is the **previous context summary** (contains all context accumulated so far):
     ---
     {context_summary}
     ---
@@ -20,37 +20,38 @@ def context_summary_3(context_summary: str, critique_text: str, user_feedback: s
     {critique_text}
     ---
 
-    Here is the **user’s responses to that critique**:
+    Here is the **user's response to that critique**:
     ---
     {user_feedback}
     ---
-    IF THE USER INPUT IS NONSENSE/GIBERISH/WITHOUT ESSENCE BRIEFLY CALL IT OUT IN THE ACKNOWLEDGEMENT MESSAGE MENTIONING THAT IT WITHOUT PROPER INPUT THE PROCESS WONT WORK.
 
     Your task has two parts:
 
-    1. Acknowledge the user's reflections directly by speaking to them in second person.
-    - Do NOT describe the user in third person.
-    - Use phrases like “you said”, “you think”, or “you suggested”.
-    - Write in a conversational tone.
-    - Aim for roughly 6 sentences total.
+    **Part 1 — Acknowledgement**
+    Write a short response directly to the user (second person only — "you said", "you think", "you suggested"). Aim for 5–6 sentences covering the most substantive points they raised.
+    - If their response was vague, one-word, or gibberish, note it plainly within the acknowledgement: e.g. "Your responses this round didn't give much to work with — the process works best when you engage with the critique directly."
+    - Do not describe the user in third person.
 
-    2. Generate an updated, structured context summary that consolidates:
+    **Part 2 — Updated Context Summary**
+    Produce a structured summary that consolidates everything known so far. This is passed as working memory to all subsequent steps, so it must be complete and self-contained — do not assume the next step has access to earlier summaries.
+
+    Include:
     - Problem
     - Idea / Approach
     - Stakeholder / Audience
-    - Constraints & non-negotiables
-    - Clarifications
-    - User feedback from Round 3
+    - Constraints & Non-Negotiables
+    - Key reflections and position updates from ALL critique rounds so far (not just Round 3)
+    - Any unresolved tensions or open questions surfaced through critique that the user has not yet addressed
 
-    ⚠️ Format your output exactly like this:
+    ⚠️ Output format:
 
     ACKNOWLEDGEMENT:
-    [Your short UI-visible message here]
+    [5–6 sentences directly to the user]
 
     ---
 
     UPDATED CONTEXT SUMMARY:
-    [The full new structured summary here — this will be saved and passed to the next step]
+    [Full structured summary — self-contained, cumulative, complete]
     """
 
     response = client.chat.completions.create(
