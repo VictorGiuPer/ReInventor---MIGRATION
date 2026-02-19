@@ -43,14 +43,12 @@ def critique_round_2(
     {framework_list}
 
     Your task:
-    - Select exactly three (3) frameworks from the remaining list.
-    - Ensure they are meaningfully different from those used in Round 1.
-    - For each selected framework:
-        - Use the **output instructions** included in the framework list to guide your critique output format
-        - Focus ONLY on critique (risks, assumptions, blind spots, constraints).
-        - DO NOT propose solutions or mitigations at this step.
-    - Avoid repeating critique already covered in Round 1.
-
+    - Select exactly three (3) frameworks from the remaining list that are meaningfully orthogonal to Round 1 — they should open new angles, not reframe the same risks.
+    - Read the updated context carefully. If the user has genuinely resolved a Round 1 concern, do not re-raise it. If they addressed it poorly or introduced a new assumption in doing so, that is fair game.
+    - Be direct and specific. Do not soften findings. Where something is a potentially fatal flaw, say so explicitly.
+    - Focus ONLY on critique and DO NOT propose solutions or mitigations.
+    - Use the **output instructions** included in the framework list to guide your critique output format
+    
     Output Format:
     (important information should be outlined with **...**)
 

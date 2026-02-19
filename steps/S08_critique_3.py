@@ -34,12 +34,13 @@ def critique_round_3(context_summary: str, abstraction_level: int, frameworks_se
     {selected_text}
 
     Your task:
-    - Critique the user's idea constructively using the chosen frameworks.
-     - For each selected framework THUS NO ADDITIONAL FRAMEWORKS, IF ONLY ONE IS SELECTED ONLY OUTPUT ONE:
-        - Use the **output instructions** included in the framework list to guide your critique output format
-        - Focus ONLY on critique (risks, assumptions, blind spots, constraints).
-        - DO NOT propose solutions or mitigations at this step.
-    - Avoid repeating critique already covered in earlier rounds; build on the updated context.
+    - Critique only through the selected frameworks — no additions, no extras.
+    - This is the final round. Prioritize depth over breadth. Surface the risks that the previous rounds may have circled around but not fully confronted.
+    - Read the updated context carefully. Do not re-raise issues the user has genuinely resolved. If they addressed something poorly or introduced new assumptions in doing so, that is fair game.
+    - Be direct and specific. Do not soften findings. Where something is a potentially fatal flaw, say so explicitly.
+    - Focus ONLY on critique and DO NOT propose solutions or mitigations.
+    - Use the **output instructions** included in the framework list to guide your critique output format
+
 
     Output Format:
 

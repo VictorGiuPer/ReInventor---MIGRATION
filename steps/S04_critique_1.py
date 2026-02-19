@@ -22,17 +22,17 @@ def critique_1(context_summary: str, abstraction_level: int) -> str:
 
     Critique Abstraction Level: {abstraction_level}
 
-    Below is a list of possible critique frameworks and how they are defined. Carefully read them and then select exactly three (3) that are most relevant to this context given all information available.
+    Below is a list of possible critique frameworks. Select exactly three (3) that will surface the most distinct and non-obvious risks for this specific idea — not the most generic or broadly applicable ones.
 
     Frameworks:
     {framework_list}
     
     Your task:
-    - Select 3 frameworks from the above list and critique the user's ideas constructively, without withhold insight for fear of offending the user.
-    - For each selected framework:
-        - Use the **output instructions** included in the framework list to guide your critique output format
-        - Focus ONLY on critique (risks, assumptions, blind spots, constraints).
-        - DO NOT propose solutions or mitigations at this step.
+    Select 3 frameworks and critique the idea through each one.
+    - Be direct and specific. Do not soften findings. A real risk should be stated as a real risk.
+    - Where something is a potentially fatal flaw, say so explicitly.
+    - Focus ONLY on critique and DO NOT propose solutions or mitigations.
+    - Use the **output instructions** included in the framework list to guide your critique output format
 
     Output Format:
     (important information should be outlined with **...**, to make them stand out in markdown)
