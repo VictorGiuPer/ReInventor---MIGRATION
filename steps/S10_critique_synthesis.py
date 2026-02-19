@@ -13,16 +13,7 @@ def critique_synthesis(
     prompt = f"""
     You are the Synthesis Engine in the Idea Hardener workflow.
 
-    The user has completed:
-    - An initial idea articulation
-    - Clarification questions
-    - Three rounds of critique using different frameworks
-    - Multiple rounds of reflection and context updates
-
-    Your role now is NOT to introduce new critique or reorganize ideas.
-    Your role is to **compress and prioritize the existing critique** so the user can clearly see what matters most.
-
-    ---
+    The user has completed three rounds of critique across multiple frameworks and has reflected on each round. Your job is not to summarize what happened — the user lived it. Your job is to tell them what it all means: what the most important unresolved problems are, where their thinking has genuinely strengthened, and where they may be fooling themselves.
 
     Here is the FINAL consolidated context summary:
     ---
@@ -34,49 +25,55 @@ def critique_synthesis(
     {all_critiques}
     ---
 
-    Here are the user’s reflections across all critique rounds:
+    Here are the user's reflections across all critique rounds:
     ---
     {all_user_reflections}
     ---
 
     ### Your task
 
-    For **each critique framework that was used**, do the following:
+    **1. Cross-cutting themes**
+    Identify 2–3 concerns that appeared across multiple frameworks or rounds — the problems the critique kept circling back to from different angles. These are the load-bearing risks. Name them plainly and explain why they kept surfacing.
 
-    1. Write **one concise sentence** that synthesizes the *core concern* raised by that framework  
-    - This should be a summary, not a repetition
-    - No more than one sentence
+    **2. Resolved vs. unresolved**
+    For each major concern raised across the rounds, make a direct assessment:
+    - Has the user genuinely addressed it, or just acknowledged it?
+    - If addressed, has their resolution introduced any new assumptions worth flagging?
+    - If unresolved, say so plainly.
 
-    2. Assign a **Criticality level**:
-    - **High** — would significantly block or derail the idea if unaddressed
-    - **Medium** — important to address but not blocking
-    - **Low** — useful improvement but non-essential
+    **3. Blind spots that remain**
+    If the critique rounds collectively missed something important — a pattern you can see by looking across all the material — name it. This is the one place where you may introduce a new observation, but only if it is clearly supported by what's already in the context.
 
-    3. Briefly explain how the users comments already consider or do not consider this critique and if possible build on top of the users ideas.
-
-    ---
-
-    ### Output format (use exactly this structure):
-
-    🧠 **Critique Synthesis & Priority Overview**
-
-    **[Framework Name]**
-    - **Synthesis:** One-sentence summary of the core concern.
-    - **Criticality:** High | Medium | Low
-    - **Why this matters:** 2–3 sentences of contextual justification.
-
-    (Repeat for each framework used.)
+    **4. Criticality ranking**
+    List the top 3 unresolved concerns in order of criticality. For each:
+    - One sentence stating the concern
+    - Criticality: High / Medium / Low
+    - One sentence on why it's ranked where it is
 
     ---
 
-    Rules:
-    - Do NOT introduce new critiques.
-    - Do NOT cluster or merge frameworks.
-    - Do NOT propose solutions or next steps.
-    - Be decisive and prioritization-oriented.
-    - Assume the user is already familiar with the details.
+    ### Output format:
 
+    🧠 **Critique Synthesis**
+
+    **Cross-cutting themes:**
+    [2–3 themes that kept surfacing, and why they matter]
+
+    **What you've genuinely resolved:**
+    [Honest assessment of what the user's reflections have actually strengthened]
+
+    **What remains unresolved:**
+    [Direct assessment of open problems — no softening]
+
+    **Remaining blind spot:**
+    [One observation the critique rounds didn't fully surface, if one exists. Skip this section if nothing meaningful to add.]
+
+    **Top 3 concerns going into mitigation:**
+    1. [Concern] — Criticality: High/Medium/Low — [Why]
+    2. [Concern] — Criticality: High/Medium/Low — [Why]
+    3. [Concern] — Criticality: High/Medium/Low — [Why]
     """
+
 
     response = client.chat.completions.create(
         model="gpt-4.1-mini",  # adjust to your deployment

@@ -10,21 +10,16 @@ def mitigation_improvement_suggestions(
     Calls the LLM to generate mitigation strategies and improvement ideas.
     """
     prompt = f"""
-    You are the Mitigation & Improvement Engine in the Idea Hardener workflow.
+    You are the Mitigation Engine in the Idea Hardener workflow.
 
-    The user has completed:
-    - The initial idea articulation
-    - Clarification questions
-    - Three rounds of critique
-    - Reflections after each critique round
-    - A concise synthesis of critique themes with criticality rankings
+    The user has completed three rounds of critique and a synthesis that identified their most important unresolved concerns. Your job is to turn those concerns into concrete, prioritized actions — not a generic improvement list, but specific moves this person can make given their context, constraints, and stakeholders.
 
     Here is the **final consolidated context summary**:
     ---
     {final_context_summary}
     ---
 
-    Here is the **critique synthesis output** with criticality levels:
+    Here is the **critique synthesis**, including the top ranked concerns:
     ---
     {critique_synthesis}
     ---
@@ -34,39 +29,53 @@ def mitigation_improvement_suggestions(
     {all_user_reflections}
     ---
 
-    Critique Abstraction Level: {abstraction_level}
+    Abstraction Level: {abstraction_level}
+    Calibrate accordingly: strategic level means focus on positioning, sequencing, and structural decisions. Tactical level means focus on concrete steps, resources, and near-term actions.
 
-    Your task is to produce **practical, grounded, and realistic recommendations** for each critique insight.
+    ### Your task
 
-    For each critique, do the following:
+    Work through the top concerns from the synthesis in order of criticality. For each:
 
-    1) Provide 2 mitigation strategies — realistic steps the user can take to reduce the identified risk or limitation.
-    2) Provide 2 idea improvement suggestions — ways to strengthen or pivot the idea while remaining true to the original intent.
-    3) Frame recommendations with:
-    - The stakeholder in mind
-    - The constraints & non‑negotiables
-    - The abstraction level (practical vs conceptual focus)
+    1. **Restate the concern in one sentence** — grounded in this specific idea, not generic
+    2. **Recommend 2–3 mitigation actions** — concrete moves that reduce the risk or address the gap. Scale depth to criticality: High concerns get more specific actions, Low concerns get leaner ones.
+    3. **Flag any trade-off** — if mitigating this concern creates tension with another part of the idea or with the user's constraints, name it explicitly.
 
-    Important:
-    - Align all recommendations with the user’s context.
-    - Do NOT repeat critique points; focus on actionable ideas.
-    - Outputs should be clear, concise, and logically grounded.
+    After addressing individual concerns, add one closing section:
 
-    Output format:
+    **What to do first** — given everything, what is the single highest-leverage action the user should take before anything else, and why.
 
-    **Mitigations & Improvement Ideas**
+    Rules:
+    - Stay grounded in the user's actual context, constraints, and stakeholders — no generic advice.
+    - Do not re-raise concerns the synthesis marked as resolved.
+    - Do not introduce new critique.
+    - If the user's own reflections already pointed toward a good mitigation, build on it rather than replacing it.
+    - Be direct. Recommended actions should be specific enough that the user knows what to do Monday morning.
 
-    **[Framework / Critique]**
-    **Criticality:** High | Medium | Low
+    ### Output format:
 
-    1) Mitigation Strategies:
-    - ...
-    - ...
+    **Mitigations**
 
-    2) Idea Improvement Suggestion:
-    - ...
-    - ...
+    **[Concern 1 — Criticality: High/Medium/Low]**
+    [One sentence restating the concern]
+    - [Action 1]
+    - [Action 2]
+    - [Action 3 if warranted]
+    ⚠️ Trade-off: [If applicable]
+
+    **[Concern 2 — Criticality: High/Medium/Low]**
+    [One sentence restating the concern]
+    - [Action 1]
+    - [Action 2]
+    ⚠️ Trade-off: [If applicable]
+
+    (Continue for remaining concerns)
+
+    ---
+
+    **What to do first:**
+    [Single highest-leverage action and the reasoning behind it]
     """
+    
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
