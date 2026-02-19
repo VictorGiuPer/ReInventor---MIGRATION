@@ -80,32 +80,38 @@
 
          /* ============================= */
          /* CRITIQUE GRID                 */
-         /* Left: full-height LLM output  */
-         /* Right: responses + ack stacked*/
+         /* Left: 60% critique (scrollable)*/
+         /* Right: 40% responses + ack     */
          /* ============================= */
          .critique-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 28px;
+            grid-template-columns: 6fr 4fr;  /* 60:40 split */
+            gap: 32px;
             margin: 24px 0;
             align-items: start;
          }
 
-         /* LEFT panel — no scroll, natural height */
+         /* LEFT panel — scrollable at fixed height */
          .critique-box {
             background: #F5F7FA;
             padding: 24px;
             border-radius: 12px;
             border: 1px solid #D1D5DB;
+            max-height: 110vh;  /* Fixed height relative to viewport */
+            overflow-y: auto;  /* Enable scroll */
          }
          .critique-box h3 {
             color: #111827;
             margin-bottom: 16px;
             padding-bottom: 12px;
             border-bottom: 2px solid #D1D5DB;
+            position: sticky;  /* Keep header visible when scrolling */
+            top: 0;
+            background: #F5F7FA;
+            z-index: 1;
          }
 
-         /* LLM output — NO max-height, NO overflow, full natural height */
+         /* LLM output content — no scroll here, parent handles it */
          .critique-content {
             line-height: 1.7;
             color: #111827;
@@ -128,26 +134,33 @@
          .critique-content code { background: #E5E7EB; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; font-family: 'SF Mono', Menlo, monospace; color: #111827; }
          .critique-content blockquote { border-left: 3px solid #60A5FA; margin: 0.8em 0; padding: 4px 16px; color: #374151; }
 
-         /* RIGHT column — flex column: responses on top, ack below */
+         /* Scrollbar for critique box */
+         .critique-box::-webkit-scrollbar { width: 8px; }
+         .critique-box::-webkit-scrollbar-track { background: #F5F7FA; border-radius: 4px; }
+         .critique-box::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
+         .critique-box::-webkit-scrollbar-thumb:hover { background: #60A5FA; }
+
+         /* RIGHT column — just the response form, ack moved outside grid */
          .critique-responses {
             display: flex;
             flex-direction: column;
-            gap: 24px;         /* space between the form block and the ack block */
          }
          .critique-responses h3  { margin-bottom: 8px; }
          .critique-responses > p { font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 16px; }
          .critique-responses .clarification-item { margin-bottom: 16px; }
-         .critique-responses textarea { margin-bottom: 0; min-height: 100px; }
+         .critique-responses textarea { margin-bottom: 0; min-height: 150px; }
          .critique-responses form { padding: 0; border: none; background: transparent; margin-top: 0; }
 
-         /* Ack block inside the right column */
-         .critique-ack {
-            padding: 20px 24px;
+         /* Standalone ack block — below grid, not full-width */
+         .critique-ack-standalone {
+            max-width: 900px;
+            margin: 32px auto 0;
+            padding: 24px;
             background: #EFF6FF;
             border-left: 4px solid #2563EB;
             border-radius: 12px;
          }
-         .critique-ack h4 { color: #1E40AF; margin-bottom: 10px; font-size: 15px; font-weight: 600; }
+         .critique-ack-standalone h4 { color: #1E40AF; margin-bottom: 12px; font-size: 16px; font-weight: 600; }
 
          /* ============================= */
          /* ACK CONTENT (markdown)        */
@@ -177,7 +190,7 @@
             z-index: 100; border-top-right-radius: 6px; border-bottom-right-radius: 6px; overflow: hidden;
          }
          .main-content {
-            margin-left: 260px; flex: 1; height: 100vh; overflow-y: auto;
+            margin-left: 220px; flex: 1; height: 100vh; overflow-y: auto;
             padding: 40px 24px; background-color: transparent;
          }
 
@@ -392,34 +405,32 @@
                      <div class="critique-content markdown-render">{{ state.critique_round_1 or "" }}</div>
                   </div>
 
-                  <!-- RIGHT: responses on top, ack below -->
+                  <!-- RIGHT: responses only -->
                   <div class="critique-responses">
-                     <div><!-- responses block -->
-                        <h3>Your Responses</h3>
-                        <p>Respond to each framework (use '-' if nothing to add).</p>
-                        {% if state.frameworks_used_round_1 %}
-                        <form method="post">
-                           {% for fw in state.frameworks_used_round_1 %}
-                           <div class="clarification-item" style="margin-bottom:16px;">
-                              <div class="fixed-label">💬 {{ fw }}</div>
-                              <textarea name="critique_response_r1_{{ loop.index0 }}" rows="5">{{ state["critique_response_r1_" ~ loop.index0] or "" }}</textarea>
-                           </div>
-                           {% endfor %}
-                           <button type="submit" name="action" value="submit_r1">Submit Your Reflections</button>
-                        </form>
-                        {% endif %}
-                     </div>
-
-                     {% if state.current_step >= 4 %}
-                     <!-- ACK inside right column, below responses -->
-                     <div id="step-3-ack" class="critique-ack">
-                        <h4>Context Update Acknowledgement</h4>
-                        <div class="ack-content markdown-render">{{ state.acknowledgement_round_1 or "" }}</div>
-                     </div>
+                     <h3>Your Responses</h3>
+                     <p>Respond to each framework (use '-' if nothing to add).</p>
+                     {% if state.frameworks_used_round_1 %}
+                     <form method="post">
+                        {% for fw in state.frameworks_used_round_1 %}
+                        <div class="clarification-item" style="margin-bottom:16px;">
+                           <div class="fixed-label">💬 {{ fw }}</div>
+                           <textarea name="critique_response_r1_{{ loop.index0 }}" rows="5">{{ state["critique_response_r1_" ~ loop.index0] or "" }}</textarea>
+                        </div>
+                        {% endfor %}
+                        <button type="submit" name="action" value="submit_r1">Submit Your Reflections</button>
+                     </form>
                      {% endif %}
                   </div><!-- /critique-responses -->
 
                </div><!-- /critique-grid -->
+
+               {% if state.current_step >= 4 %}
+               <!-- ACK below grid -->
+               <div id="step-3-ack" class="critique-ack-standalone">
+                  <h4>Context Update Acknowledgement</h4>
+                  <div class="ack-content markdown-render">{{ state.acknowledgement_round_1 or "" }}</div>
+               </div>
+               {% endif %}
 
                {% if state.current_step >= 4 %}
                <form method="post" class="action-form">
@@ -444,29 +455,27 @@
                   </div>
 
                   <div class="critique-responses">
-                     <div>
-                        <h3>Your Responses</h3>
-                        <p>Respond to each framework (use '-' if nothing to add).</p>
-                        <form method="post">
-                           {% for fw in state.frameworks_used_round_2 %}
-                           <div class="clarification-item" style="margin-bottom:16px;">
-                              <div class="fixed-label">💬 {{ fw }}</div>
-                              <textarea name="critique_response_r2_{{ loop.index0 }}" rows="5">{{ state["critique_response_r2_" ~ loop.index0] or "" }}</textarea>
-                           </div>
-                           {% endfor %}
-                           <button type="submit" name="action" value="submit_r2">Submit Your Reflections (Round 2)</button>
-                        </form>
-                     </div>
-
-                     {% if state.current_step >= 6 %}
-                     <div id="step-4-ack" class="critique-ack">
-                        <h4>Context Update Acknowledgement</h4>
-                        <div class="ack-content markdown-render">{{ state.acknowledgement_round_2 or "" }}</div>
-                     </div>
-                     {% endif %}
+                     <h3>Your Responses</h3>
+                     <p>Respond to each framework (use '-' if nothing to add).</p>
+                     <form method="post">
+                        {% for fw in state.frameworks_used_round_2 %}
+                        <div class="clarification-item" style="margin-bottom:16px;">
+                           <div class="fixed-label">💬 {{ fw }}</div>
+                           <textarea name="critique_response_r2_{{ loop.index0 }}" rows="5">{{ state["critique_response_r2_" ~ loop.index0] or "" }}</textarea>
+                        </div>
+                        {% endfor %}
+                        <button type="submit" name="action" value="submit_r2">Submit Your Reflections (Round 2)</button>
+                     </form>
                   </div><!-- /critique-responses -->
 
                </div><!-- /critique-grid -->
+               {% endif %}
+
+               {% if state.current_step >= 6 %}
+               <div id="step-4-ack" class="critique-ack-standalone">
+                  <h4>Context Update Acknowledgement</h4>
+                  <div class="ack-content markdown-render">{{ state.acknowledgement_round_2 or "" }}</div>
+               </div>
                {% endif %}
 
                {% if state.current_step >= 6 %}
@@ -509,29 +518,27 @@
                   </div>
 
                   <div class="critique-responses">
-                     <div>
-                        <h3>Your Responses</h3>
-                        <p>Respond to each framework (use '-' if nothing to add).</p>
-                        <form method="post">
-                           {% for fw in state.user_selected_frameworks %}
-                           <div class="clarification-item" style="margin-bottom:16px;">
-                              <div class="fixed-label">💬 {{ fw }}</div>
-                              <textarea name="critique_response_r3_{{ loop.index0 }}" rows="5">{{ state["critique_response_r3_" ~ loop.index0] or "" }}</textarea>
-                           </div>
-                           {% endfor %}
-                           <button type="submit" name="action" value="submit_r3">Submit Your Reflections (Round 3)</button>
-                        </form>
-                     </div>
-
-                     {% if state.acknowledgement_round_3 %}
-                     <div id="step-5-ack" class="critique-ack">
-                        <h4>Context Update Acknowledgement</h4>
-                        <div class="ack-content markdown-render">{{ state.acknowledgement_round_3 or "" }}</div>
-                     </div>
-                     {% endif %}
+                     <h3>Your Responses</h3>
+                     <p>Respond to each framework (use '-' if nothing to add).</p>
+                     <form method="post">
+                        {% for fw in state.user_selected_frameworks %}
+                        <div class="clarification-item" style="margin-bottom:16px;">
+                           <div class="fixed-label">💬 {{ fw }}</div>
+                           <textarea name="critique_response_r3_{{ loop.index0 }}" rows="5">{{ state["critique_response_r3_" ~ loop.index0] or "" }}</textarea>
+                        </div>
+                        {% endfor %}
+                        <button type="submit" name="action" value="submit_r3">Submit Your Reflections (Round 3)</button>
+                     </form>
                   </div><!-- /critique-responses -->
 
                </div><!-- /critique-grid -->
+
+               {% if state.acknowledgement_round_3 %}
+               <div id="step-5-ack" class="critique-ack-standalone">
+                  <h4>Context Update Acknowledgement</h4>
+                  <div class="ack-content markdown-render">{{ state.acknowledgement_round_3 or "" }}</div>
+               </div>
+               {% endif %}
                {% endif %}
             </section>
 

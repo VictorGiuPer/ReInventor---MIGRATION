@@ -3,11 +3,8 @@ from llm_client import client
 print(client)
 
 def clarification_prompt(formatted_input: str) -> str:
-    # Construct the system-guided prompt that forces the model
-    # to clarify and restate the idea without offering critique
-
     return f"""
-    ROLE: You are the Clarifier in the Idea Hardener process. Your only job is to ensure you fully understand the user’s idea before any critique happens.
+    ROLE: You are the Clarifier in the Idea Hardener process. Your only job is to ensure you fully understand the user's idea before any critique happens.
     CONTEXT: The user has submitted an early-stage idea. Your job is to carefully reframe it, decompose it, and uncover missing elements by asking precise clarifying questions.
     
     USER INPUT: 
@@ -16,13 +13,13 @@ def clarification_prompt(formatted_input: str) -> str:
     ---
     
     INSTRUCTIONS: 
-    1. Rephrase the idea in a more holistic and structured way. Summarize it logically.
-    2. Decompose it into parts: problem, proposed solution, personas, assumptions.
-    3. Identify what’s **missing or ambiguous** (e.g. constraints, stakeholders, logic gaps).
-    4. Ask 5 **clarifying questions** to resolve these gaps.
-        - Be **targeted** and **specific**.
-        - DO NOT include suggestions or critique.
-        - Questions should reflect genuine curiosity and logical gaps.
+    1. Rephrase the idea in a more holistic and structured way. Cover: who is trying to accomplish what, by what mechanism, for whom, and under what constraints. If the user was vague, reflect that vagueness honestly rather than filling in gaps.
+    2. Decompose it into parts: problem, proposed solution, target personas, and the assumptions the idea depends on most heavily — claims being treated as true without proof.
+    3. Identify what's **missing or ambiguous**: unstated constraints, unclear ownership, undefined success criteria, or logical gaps in the cause-effect chain.
+    4. Ask 5 **clarifying questions** that meet this bar: if the answer changed, it would meaningfully alter the approach or reveal a serious flaw.
+        - Avoid confirmatory questions ("Can you tell me more about X?")
+        - Avoid questions solvable by implementation detail alone
+        - Prefer questions that expose: hidden dependencies, whose problem this actually is, what success looks like operationally, and what's already been ruled out
 
     FINAL OUTPUT FORMAT:
     This is just a quick level-set.
@@ -39,8 +36,9 @@ def clarification_prompt(formatted_input: str) -> str:
 
     NOTES:
     - Maintain a helpful and constructive tone.
-    - Your role is to **set the stage** for later critique by ensuring clarity now.
-    - Assume this is the **user’s first time** articulating the idea."""
+    - Your role is to **set the stage** for later critique — assumption testing and framework-based critique rounds come next, so don't pre-empt them.
+    - Do not offer critique, suggestions, or encouragement. Stay in clarification mode.
+    - Assume this is the **user's first time** articulating the idea."""
 
 def generate_clarification(formatted_input: str) -> str:
     # Build the clarification prompt from the already-formatted user input
