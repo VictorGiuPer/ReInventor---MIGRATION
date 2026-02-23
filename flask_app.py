@@ -10,6 +10,8 @@ Architecture:
 - Downstream state clearing prevents stale data from affecting re-runs
 """
 
+import os
+
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_session import Session
 
@@ -32,12 +34,12 @@ from actions.context_prompt import run_context_prompt_generation
 # =============================================================================
 
 app = Flask(__name__)
-app.secret_key = "dev-secret-key"  # TODO: Replace with env var in production
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
 
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_USE_SIGNER"] = True
-app.config["SESSION_FILE_DIR"] = "./flask_sessions"
+app.config["SESSION_FILE_DIR"] = os.environ.get("SESSION_FILE_DIR", "./flask_sessions")
 
 Session(app)
 
@@ -289,7 +291,6 @@ def index():
 
     # ── POST: Handle action ──────────────────────────────────────────────
     action = request.form.get("action", "submit_idea")
-    print(f"[ACTION] {action} | current_step={state.get('current_step')}")
 
     # Ensure framework list is always available for Round 3
     if "available_frameworks" not in state:
