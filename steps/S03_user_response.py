@@ -1,16 +1,5 @@
 from llm_client import client
 
-def extract_questions(clarification_output: str) -> list:
-    """
-    Extract clarifying questions from the LLM's output.
-    Simple parser based on markdown-style list (e.g. "1. Question").
-    """
-    # Extract numbered clarification questions (assumes "1. Question" format)
-    lines = clarification_output.split("\n")
-    questions = [line.strip()[3:] for line in lines if line.strip().startswith(("1. ", "2. ", "3. ", "4. ", "5. "))]
-    return questions
-
-
 def context_prompt(user_inputs: dict, clarification_answers: dict) -> str:
     # Construct a prompt that consolidates all known context
     return f"""

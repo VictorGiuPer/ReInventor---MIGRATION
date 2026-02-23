@@ -13,13 +13,6 @@ def run_critique_round_1(
     """
     Runs Critique Round 1 (LLM).
     """
-    state.clear_except(
-        {
-            "structured_input",
-            "formatted_input",
-            "context_summary",
-        }
-    )
 
     critique_output = critique_1(
         state["context_summary"],

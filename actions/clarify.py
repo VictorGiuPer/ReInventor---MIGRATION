@@ -29,7 +29,6 @@ def run_clarification(
     )
 
     state["structured_input"] = structured
-    state["formatted_input"] = structured["full_input"]
 
     prompt = clarification_prompt(structured["full_input"])
     state["clarification_output"] = generate_clarification(prompt)

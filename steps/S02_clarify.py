@@ -1,6 +1,5 @@
 from llm_client import client
 
-print(client)
 
 def clarification_prompt(formatted_input: str) -> str:
     return f"""
@@ -14,9 +13,7 @@ def clarification_prompt(formatted_input: str) -> str:
     
     INSTRUCTIONS: 
     1. Rephrase the idea in a more holistic and structured way. Cover: who is trying to accomplish what, by what mechanism, for whom, and under what constraints. If the user was vague, reflect that vagueness honestly rather than filling in gaps.
-    2. Decompose it into parts: problem, proposed solution, target personas, and the assumptions the idea depends on most heavily — claims being treated as true without proof.
-    3. Identify what's **missing or ambiguous**: unstated constraints, unclear ownership, undefined success criteria, or logical gaps in the cause-effect chain.
-    4. Ask 5 **clarifying questions** that meet this bar: if the answer changed, it would meaningfully alter the approach or reveal a serious flaw.
+    2. Ask 5 **clarifying questions** that meet this bar: if the answer changed, it would meaningfully alter the approach or reveal a serious flaw.
         - Avoid confirmatory questions ("Can you tell me more about X?")
         - Avoid questions solvable by implementation detail alone
         - Prefer questions that expose: hidden dependencies, whose problem this actually is, what success looks like operationally, and what's already been ruled out
@@ -24,7 +21,6 @@ def clarification_prompt(formatted_input: str) -> str:
     FINAL OUTPUT FORMAT:
     This is just a quick level-set.
 
-    💡 Reframed Understanding:
     [Your holistic, structured restatement of the idea.]
     
     🧩 Clarifying Questions:

@@ -1,61 +1,73 @@
 [
   {
     "name": "Persona Critique",
+    "tooltip": "Looks at your idea through the eyes of the people who need to adopt or support it — surfacing blind spots, unmet needs, and misaligned incentives.",
     "description": "Evaluate the idea from the perspective of a specific user or stakeholder to uncover blind spots, unmet needs, and misaligned incentives. The goal is to surface what the idea looks like from the outside — not how the creator sees it.",
     "output_instructions": "Pick the single most important stakeholder this idea depends on. Surface: (1) one need or expectation this idea fails to address or assumes without verifying, (2) one reason this stakeholder might resist, ignore, or undermine the idea even if it's objectively good for them, (3) one way the idea's success metric differs from what this stakeholder actually cares about."
   },
   {
     "name": "Systems Thinking",
+    "tooltip": "Examines how your idea ripples through the broader system around it — uncovering feedback loops, second-order effects, and hidden dependencies outside your control.",
     "description": "Analyze how the idea interacts with the broader system it sits within — focusing on feedback loops, second-order effects, and unintended consequences rather than the idea in isolation.",
     "output_instructions": "Surface: (1) one feedback loop the idea could trigger — a dynamic where the idea's own success or failure amplifies itself, (2) one second-order effect on a party or system not directly targeted by the idea, (3) one dependency the idea silently relies on that sits outside the team's control."
   },
   {
     "name": "Constraint Analysis",
+    "tooltip": "Identifies the real limits — time, budget, skills, regulations — that your idea may be underweighting or taking for granted.",
     "description": "Identify the limiting factors — time, budget, skills, regulations, organizational bandwidth — that the idea may be underweighting or ignoring entirely.",
     "output_instructions": "Identify: (1) one resource or capacity constraint that is likely tighter than the idea assumes, (2) one external constraint (regulatory, market, or organizational) that could block or significantly distort execution, (3) one constraint that is being treated as fixed but might actually be negotiable — or vice versa."
   },
   {
     "name": "Opposing Viewpoint",
+    "tooltip": "Argues against your idea from the position of a credible, informed skeptic — someone who has seen similar ideas fail and knows exactly why.",
     "description": "Argue against the idea from the position of a credible, informed skeptic — not a cynic, but someone who has seen similar ideas fail and knows why.",
     "output_instructions": "Write from the perspective of someone who has seen this type of idea fail before. Surface: (1) the single strongest argument against proceeding with this approach, (2) the most dangerous assumption the idea is staking itself on, (3) the circumstance under which a reasonable person would look back and say 'we should have known this wouldn't work.'"
   },
   {
     "name": "Root Cause Analysis",
+    "tooltip": "Traces the problem back to its source to check whether your solution targets the real root or just a downstream symptom.",
     "description": "Trace the problem the idea is solving back to its underlying cause — ensuring the solution targets the source rather than a downstream symptom.",
     "output_instructions": "Apply 'why' iteratively at least 3 times starting from the stated problem. Then surface: (1) the most plausible root cause reached through that chain, (2) an alternative root cause that would lead to a fundamentally different solution, (3) an explicit assessment of whether the idea addresses the root or a symptom — and what that means for its long-term effectiveness."
   },
   {
     "name": "Assumption Testing",
+    "tooltip": "Surfaces the beliefs your idea treats as true without proof — the load-bearing assumptions that, if wrong, would significantly change or invalidate the approach.",
     "description": "Surface the claims the idea treats as true without verification — the load-bearing beliefs that, if wrong, would significantly alter or invalidate the approach.",
     "output_instructions": "Identify 3 assumptions the idea depends on most heavily. For each: (1) assess how catastrophic it would be if the assumption is wrong, (3) name one concrete signal or test that could confirm or falsify it within a realistic timeframe."
   },
   {
     "name": "Opportunity Cost Assessment",
+    "tooltip": "Examines what you're giving up — in time, resources, and future options — by committing to this idea instead of alternatives.",
     "description": "Examine what is being given up — in time, resources, and strategic optionality — by committing to this idea over alternatives.",
     "output_instructions": "Surface: (1) one alternative approach that would be deprioritized or foreclosed by committing to this idea, and what upside that sacrifices, (2) one resource or capability this idea consumes that could have compounding value if deployed elsewhere, (3) an honest assessment of whether this idea is being chosen because it is genuinely superior or because it is more familiar or easier to justify."
   },
   {
     "name": "First Principles Decomposition",
+    "tooltip": "Strips away convention and inherited assumptions to examine what your idea actually requires to be true at its most fundamental level.",
     "description": "Strip away inherited assumptions and conventions to examine what the idea actually requires to be true at its most fundamental level.",
     "output_instructions": "Surface: (1) one assumption the idea inherits from convention or precedent — something accepted because 'that's how it's done' rather than because it's been verified, (2) one belief about user behavior, market dynamics, or technical feasibility that feels obvious but has never been tested, (3) what the simplest possible version of this idea would look like if both of those assumptions were discarded."
   },
   {
     "name": "Reversibility Analysis",
+    "tooltip": "Flags which decisions in your idea lock you into a path and which ones you can still walk back — so irreversible commitments get the scrutiny they deserve.",
     "description": "Distinguish between decisions embedded in the idea that can be undone cheaply and those that lock in a path — ensuring irreversible commitments receive scrutiny proportional to their permanence.",
     "output_instructions": "Identify: (1) the single most irreversible decision or commitment embedded in this idea — what gets locked in and what it would cost to unwind, (2) one decision currently being treated as reversible that is probably less reversible than assumed, (3) whether the current level of evidence justifies the degree of commitment the idea requires."
   },
   {
     "name": "Incentive Mapping",
+    "tooltip": "Checks whether everyone your idea depends on is actually motivated to support it — or whether their rational self-interest quietly works against it.",
     "description": "Examine whether the incentives of everyone the idea depends on — users, implementers, stakeholders, decision-makers — are genuinely aligned with its success, or whether someone's rational self-interest works against it.",
     "output_instructions": "Identify 2 parties whose active cooperation the idea requires. For each: (1) what does supporting this idea cost them or require of them, (2) what is their rational incentive to resist, ignore, or deprioritize it, (3) whether the idea has a credible answer to that resistance or is simply assuming goodwill."
   },
   {
     "name": "Adoption & Behavior Change Risk",
+    "tooltip": "Assesses how much behavior change your idea requires from users, and how realistic that change is against the gravity of how people already work.",
     "description": "Assess whether the idea requires people to change existing habits, workflows, or beliefs — and how realistic that change is against the gravity of the status quo.",
     "output_instructions": "Surface: (1) the primary behavior change the idea requires from its target user and how entrenched the current behavior is, (2) the switching cost or friction point most likely to cause people to revert to the old way even if the new solution is objectively better, (3) one signal that would indicate adoption is failing early enough to course-correct."
   },
   {
     "name": "Pre-Mortem",
+    "tooltip": "Imagines the idea has already failed 12 months from now and reasons backward to find the most plausible causes before they happen.",
     "description": "Assume the idea has already failed 12 months from now. Reason backward to identify the 3 most plausible causes of that failure before they occur.",
     "output_instructions": "Write from the perspective of someone explaining why this idea failed after 12 months. Surface: (1) the most plausible internal failure cause — something within the users control that went wrong, (2) the most plausible external failure cause — something in the market, user behavior, or environment that the idea didn't account for, (3) the earliest warning sign that, in hindsight, everyone saw but nobody acted on. Do not add a summary at the end."
   }
