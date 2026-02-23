@@ -1,5 +1,5 @@
 from llm_client import client
-from core.utils import load_frameworks
+from core.utils import load_frameworks, build_framework_list_text
 
 def critique_round_3(context_summary: str, abstraction_level: int, frameworks_selected: list[str]) -> str:
     """
@@ -8,16 +8,11 @@ def critique_round_3(context_summary: str, abstraction_level: int, frameworks_se
 
     all_frameworks = load_frameworks()
 
-    # Extract only the descriptions of frameworks explicitly selected by the user
-    selected_descriptions = []
-    for fw in all_frameworks:
-        if fw["name"] in frameworks_selected:
-            selected_descriptions.append(
-                f"{fw['name']}: {fw['description']}"
-            )
+    # Filter to only the frameworks the user selected, preserving output_instructions
+    selected_frameworks = [fw for fw in all_frameworks if fw["name"] in frameworks_selected]
 
-    # Build a readable framework definition block for the LLM
-    selected_text = "\n".join(selected_descriptions)
+    # Build a readable framework definition block including output_instructions
+    selected_text = build_framework_list_text(selected_frameworks)
 
     # Construct the third critique prompt:
     prompt = f"""
@@ -29,6 +24,10 @@ def critique_round_3(context_summary: str, abstraction_level: int, frameworks_se
     ---
 
     Critique Abstraction Level: {abstraction_level}
+    Calibrate the depth and angle of your critique to this level:
+    - Level 0–3 (Practical): Focus on execution risks — specific resource gaps, named actors, near-term blockers, and operational failure modes.
+    - Level 4–6 (Balanced): Balance structural concerns with concrete execution risks.
+    - Level 7–10 (Abstract): Focus on structural and conceptual risks — incentive dynamics, logical dependencies, systemic assumptions, and model-level flaws.
 
     The user has chosen the following frameworks for critique:
     {selected_text}

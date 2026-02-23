@@ -21,6 +21,10 @@ def critique_1(context_summary: str, abstraction_level: int) -> str:
     ---
 
     Critique Abstraction Level: {abstraction_level}
+    Calibrate the depth and angle of your critique to this level:
+    - Level 0–3 (Practical): Focus on execution risks — specific resource gaps, named actors, near-term blockers, and operational failure modes.
+    - Level 4–6 (Balanced): Balance structural concerns with concrete execution risks.
+    - Level 7–10 (Abstract): Focus on structural and conceptual risks — incentive dynamics, logical dependencies, systemic assumptions, and model-level flaws.
 
     Below is a list of possible critique frameworks. Select exactly three (3) that will surface the most distinct and non-obvious risks for this specific idea — not the most generic or broadly applicable ones.
 

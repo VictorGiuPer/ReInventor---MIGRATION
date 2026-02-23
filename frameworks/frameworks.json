@@ -3,19 +3,19 @@
     "name": "Persona Critique",
     "tooltip": "Looks at your idea through the eyes of the people who need to adopt or support it — surfacing blind spots, unmet needs, and misaligned incentives.",
     "description": "Evaluate the idea from the perspective of a specific user or stakeholder to uncover blind spots, unmet needs, and misaligned incentives. The goal is to surface what the idea looks like from the outside — not how the creator sees it.",
-    "output_instructions": "Pick the single most important stakeholder this idea depends on. Surface: (1) one need or expectation this idea fails to address or assumes without verifying, (2) one reason this stakeholder might resist, ignore, or undermine the idea even if it's objectively good for them, (3) one way the idea's success metric differs from what this stakeholder actually cares about."
+    "output_instructions": "Use the actual stakeholder named or most implied in the context — do not write for a generic 'user' or 'customer'. Pick the single most important stakeholder this idea depends on. Surface: (1) one need or expectation this idea fails to address or assumes without verifying, (2) one reason this stakeholder might resist, ignore, or undermine the idea even if it's objectively good for them, (3) one way the idea's success metric differs from what this stakeholder actually cares about."
   },
   {
     "name": "Systems Thinking",
     "tooltip": "Examines how your idea ripples through the broader system around it — uncovering feedback loops, second-order effects, and hidden dependencies outside your control.",
     "description": "Analyze how the idea interacts with the broader system it sits within — focusing on feedback loops, second-order effects, and unintended consequences rather than the idea in isolation.",
-    "output_instructions": "Surface: (1) one feedback loop the idea could trigger — a dynamic where the idea's own success or failure amplifies itself, (2) one second-order effect on a party or system not directly targeted by the idea, (3) one dependency the idea silently relies on that sits outside the team's control."
+    "output_instructions": "Name specific actors, systems, or processes from the context in each point — do not describe abstract effects without naming who or what is affected. Surface: (1) one feedback loop the idea could trigger — a dynamic where the idea's own success or failure amplifies itself, (2) one second-order effect on a party or system not directly targeted by the idea, (3) one dependency the idea silently relies on that sits outside the team's control."
   },
   {
     "name": "Constraint Analysis",
     "tooltip": "Identifies the real limits — time, budget, skills, regulations — that your idea may be underweighting or taking for granted.",
     "description": "Identify the limiting factors — time, budget, skills, regulations, organizational bandwidth — that the idea may be underweighting or ignoring entirely.",
-    "output_instructions": "Identify: (1) one resource or capacity constraint that is likely tighter than the idea assumes, (2) one external constraint (regulatory, market, or organizational) that could block or significantly distort execution, (3) one constraint that is being treated as fixed but might actually be negotiable — or vice versa."
+    "output_instructions": "Name the actual constraint from the context in each point — do not describe a generic category like 'budget' or 'timeline' without grounding it in this specific idea. Identify: (1) one resource or capacity constraint that is likely tighter than the idea assumes, (2) one external constraint (regulatory, market, or organizational) that could block or significantly distort execution, (3) one constraint that is being treated as fixed but might actually be negotiable — or vice versa."
   },
   {
     "name": "Opposing Viewpoint",
@@ -33,7 +33,7 @@
     "name": "Assumption Testing",
     "tooltip": "Surfaces the beliefs your idea treats as true without proof — the load-bearing assumptions that, if wrong, would significantly change or invalidate the approach.",
     "description": "Surface the claims the idea treats as true without verification — the load-bearing beliefs that, if wrong, would significantly alter or invalidate the approach.",
-    "output_instructions": "Identify 3 assumptions the idea depends on most heavily. For each: (1) assess how catastrophic it would be if the assumption is wrong, (3) name one concrete signal or test that could confirm or falsify it within a realistic timeframe."
+    "output_instructions": "Identify 3 assumptions the idea depends on most heavily. For each: (1) assess how catastrophic it would be if the assumption is wrong, (2) assess what current evidence supports this assumption — is it verified data, reasonable analogy, intuition, or optimism treated as fact, (3) name one concrete signal or test that could confirm or falsify it within a realistic timeframe."
   },
   {
     "name": "Opportunity Cost Assessment",
